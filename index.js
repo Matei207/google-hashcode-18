@@ -126,6 +126,14 @@ for (var i = 0; i < jobsThatStillNeedDoing.length; i++) {
 	vehicle.free += job.distance;
 }
 
+
+
+/* NEW ALGORITHM */
+
+function bestScore(job, inTime) {
+    let temp = Math.abs(job.timeFinish - job.timeStart);
+    return temp = inTime == true ? temp + bonus : temp;
+}
 /* END CALCULATIONS */
 
 console.log(input);
