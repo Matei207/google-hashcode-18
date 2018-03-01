@@ -76,7 +76,7 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 function getVehicle(vehicles, x, y) {
     closestVehicle = -1;
     minDistance = 99999999999;
-        for(i = 0; i < input.vehicles; i++) {
+        for(i = 0; i < vehicles.length; i++) {
             distance = Math.abs(vehicles[i].currentX - x) + Math.abs(vehicles[i].currentY - y);
             console.log("DISTANCE FOR STEP", i);
             console.log("DISTANCE IS", distance);
@@ -108,11 +108,6 @@ for (var t = 0; t < input.steps; t++) {
 
 		// Get the free vehicle and remove it.
 		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
-<<<<<<< HEAD
-		vehicle = freeVehicles;
-=======
->>>>>>> 83b3d95c1b4820d03435a5e50a6222ae00f84729
-
 		vehicle.jobs.push(job.n);
 		vehicle.free = t + job.distance;
 		vehicle.currentX = job.end.row;
