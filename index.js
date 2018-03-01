@@ -34,6 +34,8 @@ let output = [];
 for (var i = 0; i < input.vehicles; i++) {
 	output.push({
 		n: i,
+		free: 0,
+
 		jobs: []
 	});
 }
@@ -42,6 +44,7 @@ for (var i = 1; i <= input.rides; i++) {
 	let line = lines[i].split(" ");
 	let ride = {
 		n: i - 1,
+		done: false,
 
 		start: {
 			row: parseInt(line[0]),
@@ -69,11 +72,39 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 
 /* START CALCULATIONS */
 
-    // code to actually assign
-    for (i = 0; i < input.rides; i++) {
-        output[i % input.vehicles].jobs.push(i);
-    }
-	// jobs to vehicles goes here
+for (var t = 0; t < input.steps; t++) {
+	console.log("Step " + t + "/" + input.steps);
+	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
+	let freeVehicles = output.filter((e) => e.free <= t);
+
+	for (var i = 0; i < jobsThatNeedDoingNow.length; i++) {
+		let job = jobsThatNeedDoingNow[i];
+
+		// No free vehicles.
+		if (freeVehicles.length == 0)
+			break;
+
+		// Get the free vehicle and remove it.
+		let vehicle = freeVehicles[0];
+		freeVehicles.splice(0, 1);
+
+		vehicle.jobs.push(job.n);
+		vehicle.free = t + job.distance;
+		job.done = true;
+	}
+}
+
+let jobsThatStillNeedDoing = input.ridesData.filter((e) => !e.done);
+for (var i = 0; i < jobsThatStillNeedDoing.length; i++) {
+	let job = jobsThatStillNeedDoing[i];
+
+	let vehicles = output.slice(0);
+	vehicles.sort((a, b) => a.free - b.free);
+
+	let vehicle = vehicles[0];
+	vehicle.jobs.push(job.n);
+	vehicle.free += job.distance;
+}
 
 /* END CALCULATIONS */
 
