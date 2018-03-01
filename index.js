@@ -88,6 +88,10 @@ function getVehicle(vehicles, x, y) {
         return vehicle;
 }
 
+function bestScore(job, inTime) {
+    return job.distance + (inTime ? input.bonus : 0);
+}
+
 function getTimeUntilStart(t, distance, job) {
 	return distance + Math.max(0, job.timeStart - (t + distance));
 }
@@ -98,6 +102,9 @@ function getValueOfJob(t, vehicle, job) {
 	let timeUntilStart = getTimeUntilStart(t, distance, job);
 	let startTime = t + timeUntilStart;
 	let willWeMakeItInTime = distance <= (job.timeStart - t);
+	let score = bestScore(job, willWeMakeItInTime);
+
+	return score - timeUntilStart;
 }
 
 for (var t = 0; t < input.steps; t++) {
