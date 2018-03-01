@@ -95,14 +95,11 @@ for (var t = 0; t < input.steps; t++) {
 
 	for (var i = 0; i < jobsThatNeedDoingNow.length; i++) {
 		let job = jobsThatNeedDoingNow[i];
+		console.log(job);
 
 		// No free vehicles.
 		if (freeVehicles.length == 0)
 			break;
-
-		// Ignore 'doomed' jobs.
-		if (t + job.distance >= input.steps)
-			continue;
 
 		// Get the free vehicle and remove it.
 		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
