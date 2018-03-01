@@ -35,7 +35,8 @@ for (var i = 0; i < input.vehicles; i++) {
 	output.push({
 		n: i,
 		free: 0,
-
+        	currentX: 0,
+        	currentY: 0,
 		jobs: []
 	});
 }
@@ -71,6 +72,22 @@ delete lines;
 input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
 
 /* START CALCULATIONS */
+
+function getVehicle(vehicles, x, y) {
+    closestVehicle = -1;
+    minDistance = -99;
+        for(i = 0; i < input.vehicles; i++) {
+            distance = (input.vehicles.currentX - x) + (input.vehicles.currentY - y);
+            if (minDistance > distance) {
+                minDistance = distance;
+                closestVehicle = i;
+            }
+        }
+        if (closestVehicle != -1) {
+        vehicles = vehicles.splice(closestVehicle)
+        return closestVehicle;
+    }
+}
 
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
