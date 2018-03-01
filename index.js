@@ -35,8 +35,8 @@ for (var i = 0; i < input.vehicles; i++) {
 	output.push({
 		n: i,
 		free: 0,
-        	currentX: 0,
-        	currentY: 0,
+        	col: 0,
+        	row: 0,
 		jobs: []
 	});
 }
@@ -73,19 +73,21 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 
 /* START CALCULATIONS */
 
-function getVehicle(vehicles, x, y) {
-    closestVehicle = -1;
-    minDistance = 99999999999;
-        for(i = 0; i < vehicles.length; i++) {
-            distance = Math.abs(vehicles[i].currentX - x) + Math.abs(vehicles[i].currentY - y);
-            if (minDistance > distance) {
-                minDistance = distance;
-                closestVehicle = i;
-            }
-        }
-        vehicle = vehicles[closestVehicle];
-        vehicles.splice(closestVehicle, 1)
-        return vehicle;
+function getBestJobForVehicle(t, vehicle, jobs) {
+	let best = null;
+	let bestScore = -1;
+
+	for (var i = 0; i < jobs.length; i++) {
+		var job = jobs[i];
+		var score = getValueOfJob(t, vehicle, job);
+
+		if (score > bestScore)
+			best = i;
+	}
+
+        let result = jobs[best];
+        jobs.splice(best, 1)
+        return result;
 }
 
 function bestScore(job, inTime) {
@@ -98,34 +100,35 @@ function getTimeUntilStart(t, distance, job) {
 
 function getValueOfJob(t, vehicle, job) {
 	// Distance of the vehicle to the job start.
-	let distance = Math.abs(vehicle.currentX - job.start.row) + Math.abs(vehicle.currentY - job.start.col);
+	let distance = distTo(vehicle, job.start);
 	let timeUntilStart = getTimeUntilStart(t, distance, job);
 	let startTime = t + timeUntilStart;
 	let willWeMakeItInTime = distance <= (job.timeStart - t);
 	let score = bestScore(job, willWeMakeItInTime);
 
+	if ((t + distance) >= input.steps)
+		return 0;
+
 	return score - timeUntilStart;
+}
+
+function distTo(x, y) {
+	return Math.abs(x.col - y.col) + Math.abs(x.row - y.row);
 }
 
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
-	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
+	let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 	let freeVehicles = output.filter((e) => e.free <= t);
 
-	for (var i = 0; i < jobsThatNeedDoingNow.length; i++) {
-		let job = jobsThatNeedDoingNow[i];
-		console.log(job);
+	for (var i = 0; i < freeVehicles.length; i++) {
+		var vehicle = freeVehicles[i];
+		var job = getBestJobForVehicle(t, vehicle, jobsThatNeedDoing);
 
-		// No free vehicles.
-		if (freeVehicles.length == 0)
-			break;
-
-		// Get the free vehicle and remove it.
-		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
 		vehicle.jobs.push(job.n);
-		vehicle.free = t + job.distance;
-		vehicle.currentX = job.end.row;
-		vehicle.currentY = job.end.col;
+		vehicle.free = t + job.distance + distTo(vehicle, job.start);
+		vehicle.col = job.end.col;
+		vehicle.row = job.end.row;
 		job.done = true;
 	}
 }
@@ -142,14 +145,6 @@ for (var i = 0; i < jobsThatStillNeedDoing.length; i++) {
 	vehicle.free += job.distance;
 }
 
-
-
-/* NEW ALGORITHM */
-
-function bestScore(job, inTime) {
-    let temp = Math.abs(job.timeFinish - job.timeStart);
-    return temp = inTime == true ? temp + bonus : temp;
-}
 /* END CALCULATIONS */
 
 console.log(input);
