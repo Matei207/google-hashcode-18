@@ -72,7 +72,7 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 /* START CALCULATIONS */
 function getVehicle(vehicles, x, y) {
     closestVehicle = -1;
-    minDistance = -99;
+    minDistance = 99999999999;
         for(i = 0; i < input.vehicles; i++) {
             distance = (input.vehicles.currentX - x) + (input.vehicles.currentY - y);
             if (minDistance > distance) {
@@ -80,10 +80,9 @@ function getVehicle(vehicles, x, y) {
                 closestVehicle = i;
             }
         }
-        if (closestVehicle != -1) {
-        vehicles = vehicles.splice(closestVehicle)
-        return closestVehicle;
-    }
+        vehicle = vehicles[closestVehicle];
+        vehicles.splice(closestVehicle, 1)
+        return vehicle;
 }
     // code to actually assign
     for (i = 0; i < input.rides; i++) {
