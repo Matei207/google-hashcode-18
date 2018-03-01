@@ -133,9 +133,9 @@ function distTo(x, y) {
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
 	let freeVehicles = output.filter((e) => e.free <= t);
+	let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 
 	for (var i = 0; i < freeVehicles.length; i++) {
-		let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 		var vehicle = freeVehicles[i];
 		var job = getBestJobForVehicle(t, vehicle, jobsThatNeedDoing);
 		var bestVehicle = getBestVehicleForJob(t, output, job);
@@ -147,7 +147,11 @@ for (var t = 0; t < input.steps; t++) {
 		vehicle.free = t + job.distance + distTo(vehicle, job.start);
 		vehicle.col = job.end.col;
 		vehicle.row = job.end.row;
+
 		job.done = true;
+
+		// Remove job.
+		jobsThatNeedDoing.splice(jobsThatNeedDoing.indexOf(job), 1);
 	}
 }
 
