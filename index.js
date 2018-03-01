@@ -30,6 +30,8 @@ input.steps = parseInt(header[4]);
 for (var i = 1; i <= input.rides; i++) {
 	let line = lines[i].split(" ");
 	let ride = {
+		n: i - 1,
+
 		start: {
 			row: parseInt(line[0]),
 			col: parseInt(line[1])
