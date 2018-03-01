@@ -73,17 +73,24 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 
 /* START CALCULATIONS */
 
-function getBestJobForVehicle(t, vehicle, jobs) {
+function getBestJobForVehicle(t, vehicle, jobs, rejected) {
 	let best = null;
 	let bestScore = -1;
 
 	for (var i = 0; i < jobs.length; i++) {
 		var job = jobs[i];
+
+		if (rejected.indexOf(job.n) < 0)
+			continue;
+
 		var score = getValueOfJob(t, vehicle, job);
 
 		if (score > bestScore)
 			best = i;
 	}
+
+	if (best == null)
+		return null;
 
         return jobs[best];
 }
@@ -123,7 +130,9 @@ function getValueOfJob(t, vehicle, job) {
 	if ((t + distance) >= input.steps)
 		return 0;
 
-	return score - timeUntilStart;
+	let val = score - timeUntilStart;
+	scoreCache[vehicle.n][job.n][t] = val;
+	return val;
 }
 
 function distTo(x, y) {
@@ -136,21 +145,33 @@ for (var t = 0; t < input.steps; t++) {
 	let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 
 	for (var i = 0; i < freeVehicles.length; i++) {
-		var vehicle = freeVehicles[i];
-		var job = getBestJobForVehicle(t, vehicle, jobsThatNeedDoing);
-		var bestVehicle = getBestVehicleForJob(t, output, job);
+		var job;
+		var done = false;
+		var rejected = [];
+		do {
+			var vehicle = freeVehicles[i];
+			job = getBestJobForVehicle(t, vehicle, jobsThatNeedDoing, rejected);
+			if (!job) {
+				done = true;
+				continue;
+			}
 
-		if (vehicle.n != bestVehicle.n)
+			var bestVehicle = getBestVehicleForJob(t, output, job);
+
+               		if (vehicle.n != bestVehicle.n) {
+				rejected.push(job.n);
+                        	continue;
+			} else done = true;
+		} while (!done);
+
+		if (!job)
 			continue;
 
 		vehicle.jobs.push(job.n);
 		vehicle.free = t + job.distance + distTo(vehicle, job.start);
 		vehicle.col = job.end.col;
 		vehicle.row = job.end.row;
-
 		job.done = true;
-
-		// Remove job.
 		jobsThatNeedDoing.splice(jobsThatNeedDoing.indexOf(job), 1);
 	}
 }
