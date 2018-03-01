@@ -88,6 +88,10 @@ function getVehicle(vehicles, x, y) {
         return vehicle;
 }
 
+function getTimeUntilStart(t, distance, job) {
+	return distance + Math.max(0, job.timeStart - (t + distance));
+}
+
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
 	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
