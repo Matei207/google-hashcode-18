@@ -46,6 +46,8 @@ for (var i = 1; i <= input.rides; i++) {
 		timeFinish: parseInt(line[5])
 	};
 
+	ride.distance = Math.abs(ride.start.row - ride.end.row) + Math.abs(ride.start.col - ride.end.col);
+
 	input.ridesData.push(ride);
 }
 
