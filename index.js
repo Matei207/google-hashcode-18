@@ -61,9 +61,6 @@ for (var i = 1; i <= input.rides; i++) {
 delete lines;
 
 // Sort the rides data.
-input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
-
-const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
+input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
 console.log(input);
-console.log("This is sorted input --->", sortedInput);
 console.log(output);
