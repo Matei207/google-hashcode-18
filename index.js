@@ -5,9 +5,9 @@ let input = {
     },
     vehicles:0,
     rides: 0,
+    ridesData: [],
     bonus: 0,
-    steps: 0,
-    individualRides:[],
+    steps: 0
 };
 
 let filepath = "./datasets/a_example.in";
@@ -26,5 +26,27 @@ input.vehicles = parseInt(header[2]);
 input.rides = parseInt(header[3]);
 input.bonus = parseInt(header[3]);
 input.steps = parseInt(header[4]);
+
+for (var i = 1; i <= input.rides; i++) {
+	let line = lines[i].split(" ");
+	let ride = {
+		start: {
+			row: parseInt(line[0]),
+			col: parseInt(line[1])
+		},
+
+		end: {
+			row: parseInt(line[2]),
+			col: parseInt(line[3])
+		},
+
+		timeStart: parseInt(line[4]),
+		timeFinish: parseInt(line[5])
+	};
+
+	input.ridesData.push(ride);
+}
+
+delete lines;
 
 console.log(input);
