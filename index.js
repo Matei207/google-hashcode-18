@@ -85,9 +85,23 @@ function getBestJobForVehicle(t, vehicle, jobs) {
 			best = i;
 	}
 
-        let result = jobs[best];
-        jobs.splice(best, 1)
-        return result;
+        return jobs[best];
+}
+
+function getBestVehicleForJob(t, vehicles, job) {
+	let best = null;
+	let bestScore = -1;
+
+	for (var i = 0; i < vehicles.length; i++) {
+		var vehicle = vehicles[i];
+		var time = vehicle.free > t ? vehicle.free : t;
+		var score = getValueOfJob(time, vehicle, job);
+
+		if (score > bestScore)
+			best = i;
+	}
+
+	return vehicles[best];
 }
 
 function bestScore(job, inTime) {
@@ -118,12 +132,16 @@ function distTo(x, y) {
 
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
-	let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 	let freeVehicles = output.filter((e) => e.free <= t);
 
 	for (var i = 0; i < freeVehicles.length; i++) {
+		let jobsThatNeedDoing = input.ridesData.filter((e) => !e.done);
 		var vehicle = freeVehicles[i];
 		var job = getBestJobForVehicle(t, vehicle, jobsThatNeedDoing);
+		var bestVehicle = getBestVehicleForJob(t, output, job);
+
+		if (vehicle.n != bestVehicle.n)
+			continue;
 
 		vehicle.jobs.push(job.n);
 		vehicle.free = t + job.distance + distTo(vehicle, job.start);
