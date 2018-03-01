@@ -34,8 +34,9 @@ let output = [];
 for (var i = 0; i < input.vehicles; i++) {
 	output.push({
 		n: i,
-        currentX: 0,
-        currentY: 0,
+		free: 0,
+        	currentX: 0,
+        	currentY: 0,
 		jobs: []
 	});
 }
@@ -44,6 +45,7 @@ for (var i = 1; i <= input.rides; i++) {
 	let line = lines[i].split(" ");
 	let ride = {
 		n: i - 1,
+		done: false,
 
 		start: {
 			row: parseInt(line[0]),
@@ -70,6 +72,7 @@ delete lines;
 input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
 
 /* START CALCULATIONS */
+
 function getVehicle(vehicles, x, y) {
     closestVehicle = -1;
     minDistance = 99999999999;
@@ -84,11 +87,42 @@ function getVehicle(vehicles, x, y) {
         vehicles.splice(closestVehicle, 1)
         return vehicle;
 }
-    // code to actually assign
-    for (i = 0; i < input.rides; i++) {
-        output[i % input.vehicles].jobs.push(i);
-    }
-	// jobs to vehicles goes here
+
+for (var t = 0; t < input.steps; t++) {
+	console.log("Step " + t + "/" + input.steps);
+	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
+	let freeVehicles = output.filter((e) => e.free <= t);
+
+	for (var i = 0; i < jobsThatNeedDoingNow.length; i++) {
+		let job = jobsThatNeedDoingNow[i];
+
+		// No free vehicles.
+		if (freeVehicles.length == 0)
+			break;
+
+		// Get the free vehicle and remove it.
+		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
+		vehicle = freeVehicles[];
+
+		vehicle.jobs.push(job.n);
+		vehicle.free = t + job.distance;
+		vehicle.currentX = job.end.row;
+		vehicle.currentY = job.end.col;
+		job.done = true;
+	}
+}
+
+let jobsThatStillNeedDoing = input.ridesData.filter((e) => !e.done);
+for (var i = 0; i < jobsThatStillNeedDoing.length; i++) {
+	let job = jobsThatStillNeedDoing[i];
+
+	let vehicles = output.slice(0);
+	vehicles.sort((a, b) => a.free - b.free);
+
+	let vehicle = vehicles[0];
+	vehicle.jobs.push(job.n);
+	vehicle.free += job.distance;
+}
 
 /* END CALCULATIONS */
 
