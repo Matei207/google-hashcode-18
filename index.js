@@ -69,7 +69,10 @@ input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFin
 
 /* START CALCULATIONS */
 
-	// code to actually assign
+    // code to actually assign
+    for (i = 0; i < input.rides; i++) {
+        output[i % input.vehicles].jobs.push(i);
+    }
 	// jobs to vehicles goes here
 
 /* END CALCULATIONS */
