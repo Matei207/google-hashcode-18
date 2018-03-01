@@ -77,14 +77,20 @@ function getVehicle(vehicles, x, y) {
     closestVehicle = -1;
     minDistance = 99999999999;
         for(i = 0; i < input.vehicles; i++) {
-            distance = (input.vehicles.currentX - x) + (input.vehicles.currentY - y);
+            distance = Math.abs(vehicles[i].currentX - x) + Math.abs(vehicles[i].currentY - y);
+            console.log("DISTANCE FOR STEP", i);
+            console.log("DISTANCE IS", distance);
             if (minDistance > distance) {
                 minDistance = distance;
                 closestVehicle = i;
             }
         }
+        console.log("MIN DISTANCE", minDistance);
+        console.log("INDEX", closestVehicle);
+        console.log("VEHICLES", vehicles);
         vehicle = vehicles[closestVehicle];
         vehicles.splice(closestVehicle, 1)
+        console.log("VEHICLE", vehicle);
         return vehicle;
 }
 
@@ -102,7 +108,7 @@ for (var t = 0; t < input.steps; t++) {
 
 		// Get the free vehicle and remove it.
 		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
-		vehicle = freeVehicles[];
+		vehicle = freeVehicles;
 
 		vehicle.jobs.push(job.n);
 		vehicle.free = t + job.distance;
