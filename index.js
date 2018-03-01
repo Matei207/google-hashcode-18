@@ -102,7 +102,9 @@ function getBestVehicleForJob(t, vehicles, job) {
 	for (var i = 0; i < vehicles.length; i++) {
 		var vehicle = vehicles[i];
 		var time = vehicle.free > t ? vehicle.free : t;
+		var untilFree = Math.max(vehicle.free - t, 0);
 		var score = getValueOfJob(time, vehicle, job);
+		score -= untilFree;
 
 		if (score > bestScore)
 			best = i;
