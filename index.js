@@ -27,6 +27,13 @@ input.rides = parseInt(header[3]);
 input.bonus = parseInt(header[3]);
 input.steps = parseInt(header[4]);
 
+let output = [input.vehicles];
+for (var i = 0; i < output.length; i++) {
+	output[i] = {
+		jobs: []
+	};
+}
+
 for (var i = 1; i <= input.rides; i++) {
 	let line = lines[i].split(" ");
 	let ride = {
@@ -53,7 +60,10 @@ for (var i = 1; i <= input.rides; i++) {
 
 delete lines;
 
-console.log(input);
+// Sort the rides data.
+input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
 
 const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
+console.log(input);
 console.log("This is sorted input --->", sortedInput);
+console.log(output);
