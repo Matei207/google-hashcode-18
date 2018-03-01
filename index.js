@@ -92,6 +92,14 @@ function getTimeUntilStart(t, distance, job) {
 	return distance + Math.max(0, job.timeStart - (t + distance));
 }
 
+function getValueOfJob(t, vehicle, job) {
+	// Distance of the vehicle to the job start.
+	let distance = Math.abs(vehicle.currentX - job.start.row) + Math.abs(vehicle.currentY - job.start.col);
+	let timeUntilStart = getTimeUntilStart(t, distance, job);
+	let startTime = t + timeUntilStart;
+	let willWeMakeItInTime = distance <= (job.timeStart - t);
+}
+
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
 	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
