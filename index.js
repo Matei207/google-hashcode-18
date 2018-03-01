@@ -10,8 +10,10 @@ let input = {
     steps: 0
 };
 
-let filepath = "./datasets/a_example.in";
-let filepathOut = "./output.txt";
+let filepath = process.argv[2];
+let filepathOut = process.argv[3];
+
+console.log(filepath + " -> " + filepathOut);
 
 const fs = require("fs");
 
