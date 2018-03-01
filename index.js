@@ -63,13 +63,14 @@ for (var i = 1; i <= input.rides; i++) {
 delete lines;
 
 // Sort the rides data.
-input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
+input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
 
-/* START ACTUAL CALCULATIONS */
+/* START CALCULATIONS */
 
-//
+	// code to actually assign
+	// jobs to vehicles goes here
 
-/* END ACTUAL CALCULATIONS */
+/* END CALCULATIONS */
 
 console.log(input);
 console.log(output);
