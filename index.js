@@ -54,4 +54,4 @@ delete lines;
 console.log(input);
 
 const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
-console.log(sortedInput);
+console.log("This is sorted input --->", sortedInput);
