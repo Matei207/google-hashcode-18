@@ -11,6 +11,7 @@ let input = {
 };
 
 let filepath = "./datasets/a_example.in";
+let filepathOut = "./output.txt";
 
 const fs = require("fs");
 
@@ -27,11 +28,12 @@ input.rides = parseInt(header[3]);
 input.bonus = parseInt(header[3]);
 input.steps = parseInt(header[4]);
 
-let output = [input.vehicles];
-for (var i = 0; i < output.length; i++) {
-	output[i] = {
+let output = [];
+for (var i = 0; i < input.vehicles; i++) {
+	output.push({
+		n: i,
 		jobs: []
-	};
+	});
 }
 
 for (var i = 1; i <= input.rides; i++) {
@@ -63,5 +65,25 @@ delete lines;
 // Sort the rides data.
 input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
 
+/* START ACTUAL CALCULATIONS */
+
+//
+
+/* END ACTUAL CALCULATIONS */
+
 console.log(input);
 console.log(output);
+
+let outputLines = "";
+for (var i = 0; i < output.length; i++) {
+	let vehicle = output[i];
+	outputLines += vehicle.jobs.length.toString();
+	for (var j = 0; j < vehicle.jobs.length; j++) {
+		outputLines += " ";
+		outputLines += vehicle.jobs[j].toString();
+	}
+
+	outputLines += "\n";
+}
+
+fs.writeFileSync(filepathOut, outputLines);
