@@ -55,5 +55,5 @@ delete lines;
 
 console.log(input);
 
-const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
+const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish).sort((a,b) => a.distance - b.distance);
 console.log("This is sorted input --->", sortedInput);
