@@ -50,3 +50,6 @@ for (var i = 1; i <= input.rides; i++) {
 delete lines;
 
 console.log(input);
+
+const sortedInput = input.ridesData.sort((a,b) => a.timeStart - b.timeStart).sort((a,b) => a.timeFinish - b.timeFinish);
+console.log(sortedInput);
