@@ -88,6 +88,10 @@ function getVehicle(vehicles, x, y) {
         return vehicle;
 }
 
+function getTimeUntilStart(t, distance, job) {
+	return distance + Math.max(0, job.timeStart - (t + distance));
+}
+
 for (var t = 0; t < input.steps; t++) {
 	console.log("Step " + t + "/" + input.steps);
 	let jobsThatNeedDoingNow = input.ridesData.filter((e) => !e.done && e.timeStart <= t);
@@ -95,14 +99,11 @@ for (var t = 0; t < input.steps; t++) {
 
 	for (var i = 0; i < jobsThatNeedDoingNow.length; i++) {
 		let job = jobsThatNeedDoingNow[i];
+		console.log(job);
 
 		// No free vehicles.
 		if (freeVehicles.length == 0)
 			break;
-
-		// Ignore 'doomed' jobs.
-		if (t + job.distance >= input.steps)
-			continue;
 
 		// Get the free vehicle and remove it.
 		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
