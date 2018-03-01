@@ -102,11 +102,13 @@ for (var t = 0; t < input.steps; t++) {
 			break;
 
 		// Get the free vehicle and remove it.
-		let vehicle = freeVehicles[0];
-		freeVehicles.splice(0, 1);
+		let vehicle = getVehicle(freeVehicles, job.start.row, job.start.col);
+		vehicle = freeVehicles[];
 
 		vehicle.jobs.push(job.n);
 		vehicle.free = t + job.distance;
+		vehicle.currentX = job.end.row;
+		vehicle.currentY = job.end.col;
 		job.done = true;
 	}
 }
